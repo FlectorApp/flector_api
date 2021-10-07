@@ -1,0 +1,5 @@
+fastapi==0.68.1
+uvicorn==0.15.0
+web3==5.23.1
+pycoingecko==2.2.0
+requests==2.26.0
