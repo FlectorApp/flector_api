@@ -8,6 +8,7 @@ from pycoingecko import CoinGeckoAPI
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 origins = ["*"]
@@ -26,14 +27,13 @@ Contract = '0xD6ca9451bba47e26706A701aE05bE45A712D4B1B' # ADAFlect Contract
 BSC_API = os.environ['BSC_API_KEY']
 bsc = 'https://bsc-dataseed.binance.org/'
 
-@app.get("/")
-def read_():
-    response = RedirectResponse(url='https://flector.xyz')
-    return response
+@app.get("/", response_class=RedirectResponse)
+def redirect():
+    return 'https://flector.xyz'
     
 
 @app.get("/rewards/{wallet}")
-def read_(wallet: str, currency: str = 'usd'):
+def rewards(wallet: str, currency: str = 'usd'):
     return ada(wallet, currency)
 
 
@@ -57,5 +57,5 @@ def ada(wallet, currency):
     return {"ada_price_usd": price_usd, "ada_change_24h": change_24h, "pending_ada": pending_ada, "pending_usd":pending_usd,"total_ada":total_ada,"total_usd":total_usd,"last_reward_date":last_reward_date,"last_reward_hours":last_reward_hours, "currency":currency, "bep20_dev_wallet": bep20_dev_wallet}
 
 @app.get("/cg/price")
-def read_(ids: str, currency: str = 'usd'):
+def price(ids: str, currency: str = 'usd'):
     return cg.get_price(ids=ids, vs_currencies=currency,include_24hr_change='true', include_24hr_vol='true', include_last_updated_at='true', include_market_cap='true')
