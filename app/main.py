@@ -26,6 +26,12 @@ Contract = '0xD6ca9451bba47e26706A701aE05bE45A712D4B1B' # ADAFlect Contract
 BSC_API = os.environ['BSC_API_KEY']
 bsc = 'https://bsc-dataseed.binance.org/'
 
+@app.get("/")
+def read_():
+    response = RedirectResponse(url='https://flector.xyz')
+    return response
+    
+
 @app.get("/rewards/{wallet}")
 def read_(wallet: str, currency: str = 'usd'):
     return ada(wallet, currency)
